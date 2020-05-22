@@ -1,0 +1,8 @@
+library("BiocManager")
+library(GEOquery)
+library(Biobase)
+
+data <- getGEO('GSE10432', GSEMatrix=TRUE)
+install.packages('caTools')
+install.packages("installr")
+getOption("repos")

@@ -1,0 +1,13 @@
+---
+title: "13-cis retinoic acid treatment of human sebocytes (SEB-1)"
+author: "Sara López Ruiz de Vargas"
+date: "March 22, 2020"
+---
+
+#Description of the main objectives
+
+#Elements of experimental design 
+
+* Response variable
+* Groups (Experimental factors) and levels
+* Sample size and number of experimental units per each combination of factors
