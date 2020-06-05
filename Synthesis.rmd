@@ -1,0 +1,50 @@
+---
+title: "Synthesis exercise:  of Miccroarray Data Analysis" 
+author: "Sara López Ruiz de Vargas"
+output: html_document 
+---
+
+
+#13-cis retinoic treatment of human sebocytes (SEB-1) - GSE10432
+
+
+##Description of the study 
+The title of the study is 13-cis retinoic treatment of human sebocytes SEB-1. The organism tested is human. 
+The main objective is to study the sebocyte-specific mechanism of action by analyzing the effects of 72 hour 13-cis RA treatment on cultured human sebocyte cells (SEB-1), to gain insight on the pathogenesis of acne 
+
+##Brief description of the data
+```{r}
+library(Biobase)
+library(GEOquery)
+gse10432 <- getGEO(filename='GSE10432_series_matrix.txt.gz')
+
+
+```
+
+Numerical summaries , plots etc.
+
+##Experimental design 
+* Response variable: Expression of genes
+* Groups and levels: Group control and group treated
+* Type of experimental design: Completely randomized design
+* Sample size and number of experimental units per combination of factors: Total sample size of six, three treated and three control
+
+##Comparisons between groups 
+
+##Design matrix and contrast matrix
+
+###Design matrix
+Sample | Groups | Treated | Control 
+------ |--------|---------|--------
+Sample1|Control |0        |1
+Sample2|Control |0        |1
+Sample3|Control |0        |1
+Sample4|Treated |1        |0
+Sample5|Treated |1        |0
+Sample6|Treated |1        |0
+
+##Linear model 
+
+
+
+
