@@ -13,15 +13,32 @@ The title of the study is 13-cis retinoic treatment of human sebocytes SEB-1. Th
 The main objective is to study the sebocyte-specific mechanism of action by analyzing the effects of 72 hour 13-cis RA treatment on cultured human sebocyte cells (SEB-1), to gain insight on the pathogenesis of acne 
 
 ##Brief description of the data
+First we need to load the data and extract the expression set :
 ```{r}
 library(Biobase)
 library(GEOquery)
-gse10432 <- getGEO(filename='GSE10432_series_matrix.txt.gz')
-
-
+eset <- getGEO('GSE10432')[[1]]
+class(eset)
 ```
 
-Numerical summaries , plots etc.
+Now let's examine the data inside this Expression set. 
+* Numerical summary : 
+```{r}
+summary(exprs(eset))
+```
+
+
+* Histogram of the frequency of the expression values
+```{r}
+hist(exprs(eset))
+```
+
+* Histogram for the std deviation of expression values 
+```{r}
+stdDev = apply(exprs(eset), 1, sd)
+hist(stdDev)
+```
+
 
 ##Experimental design 
 * Response variable: Expression of genes
