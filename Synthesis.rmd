@@ -47,21 +47,51 @@ hist(stdDev)
 * Sample size and number of experimental units per combination of factors: Total sample size of six, three treated and three control
 
 ##Comparisons between groups 
-
+The comparison I deem more interesting given the study is trated vs. non-treated.
+* A set of possible interesting comparisons :
+  b1 = s4- s1
+  b2 = s5 - s2
+  b3 = s6 - s3
+  
 ##Design matrix and contrast matrix
 
 ###Design matrix
-Sample | Groups | Treated | Control 
------- |--------|---------|--------
-Sample1|Control |0        |1
-Sample2|Control |0        |1
-Sample3|Control |0        |1
-Sample4|Treated |1        |0
-Sample5|Treated |1        |0
-Sample6|Treated |1        |0
+
+
+```{r designMatrix}
+design<-matrix(
+  c(0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0 , 0),
+  nrow=6,byrow=F)
+colnames(design) <- c("Treated", "Control")
+rownames(design) <- c("GSM263915","GSM263916", "GSM263917", "GSM263918", "GSM263919", "GSM263920")
+print(design)
+
+```
+
+###Contrast matrix 
+```{r contrastsMatrix}
+require(limma)
+cont.matrix <- makeContrasts (
+  c1 = Treated - Control,  
+  levels=design)
+print(cont.matrix)
+```
 
 ##Linear model 
+```{r fitModel}
+require(limma)
+fit<-lmFit(eset, design)
+fit.main<-contrasts.fit(fit, cont.matrix)
+fit.main<-eBayes(fit.main)
+```
+```{r extractResults}
+topTab_TvsC <- topTable (fit.main, number=nrow(fit.main), coef="c1", adjust="fdr"); head(topTab_TvsC)
 
+```
 
+```{r showResults}
+volcanoplot(fit.main, coef="c1", highlight=10)
+
+```
 
 
