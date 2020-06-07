@@ -1,16 +1,19 @@
 ---
-title: "Synthesis exercise:  of Miccroarray Data Analysis" 
+title: "Synthesis exercise:  of Microarray Data Analysis" 
 author: "Sara López Ruiz de Vargas"
 output: html_document 
 ---
 
 
-#13-cis retinoic treatment of human sebocytes (SEB-1) - GSE10432
+#13-cis retinoic treatment of human sebocytes (SEB-1) 
 
+GEOdata Identifier : GSE10432
+
+Github : https://github.com/slrvv/Omics-Techniques.git
 
 ##Description of the study 
 The title of the study is 13-cis retinoic treatment of human sebocytes SEB-1. The organism tested is human. 
-The main objective is to study the sebocyte-specific mechanism of action by analyzing the effects of 72 hour 13-cis RA treatment on cultured human sebocyte cells (SEB-1), to gain insight on the pathogenesis of acne 
+The main objective is to study the sebocyte-specific mechanism of action by analyzing the effects of 72 hour 13-cis RA treatment on cultured human sebocyte cells (SEB-1), to gain insight on the pathogenesis of acne. 
 
 ##Brief description of the data
 First we need to load the data and extract the expression set :
@@ -21,19 +24,21 @@ eset <- getGEO('GSE10432')[[1]]
 class(eset)
 ```
 
-Now let's examine the data inside this Expression set. 
+Now let's examine the data inside this Expression set.
+
 * Numerical summary : 
 ```{r}
 summary(exprs(eset))
 ```
 
-
 * Histogram of the frequency of the expression values
+
 ```{r}
 hist(exprs(eset))
 ```
 
 * Histogram for the std deviation of expression values 
+
 ```{r}
 stdDev = apply(exprs(eset), 1, sd)
 hist(stdDev)
@@ -48,15 +53,12 @@ hist(stdDev)
 
 ##Comparisons between groups 
 The comparison I deem more interesting given the study is trated vs. non-treated.
-* A set of possible interesting comparisons :
-  b1 = s4- s1
-  b2 = s5 - s2
-  b3 = s6 - s3
+So the contrast is going to be :
+c1 = Treated - Control
   
 ##Design matrix and contrast matrix
 
 ###Design matrix
-
 
 ```{r designMatrix}
 design<-matrix(
@@ -78,20 +80,20 @@ print(cont.matrix)
 ```
 
 ##Linear model 
+Now that we have constructed our matrices let's fit the data and the matrices to a linear model. 
+Adjusting also for false discovery rates. 
 ```{r fitModel}
 require(limma)
 fit<-lmFit(eset, design)
 fit.main<-contrasts.fit(fit, cont.matrix)
 fit.main<-eBayes(fit.main)
-```
-```{r extractResults}
 topTab_TvsC <- topTable (fit.main, number=nrow(fit.main), coef="c1", adjust="fdr"); head(topTab_TvsC)
-
+write.csv2(topTab_TvsC, file=paste("Selected.Genes.in.comparison.","control_vs_treated",".csv", sep=""))
 ```
 
 ```{r showResults}
-volcanoplot(fit.main, coef="c1", highlight=10)
+volcanoplot(fit.main, coef="c1", highlight=6)
 
 ```
 
-
+As we can see in the plot the differentialy expressed genes correspond to the probeset identifiers : 32821_at, 1042_at, 988_at, 39016_r_at, 36105_at, 40071_at. 
